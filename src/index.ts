@@ -45,10 +45,8 @@ const paymentForm = new PaymentFormView(
 	events,
 	{
 		onClick: (name) => {
-			if (name === 'card' || 'cash') {
-				paymentForm.selected = name;
-				orderData.setOrderField('payment', name);
-			}
+			paymentForm.selected = name;
+			orderData.setOrderField('payment', name);
 		},
 	}
 );
@@ -138,6 +136,7 @@ events.on('basket:change', () => {
 			price: item.price,
 		});
 	});
+	basket.setNumbers();
 	basket.total = basketData.totalPrice;
 	events.emit('items:change');
 });
@@ -214,6 +213,8 @@ events.on('contacts:submit', () => {
 			});
 			basketData.clearBasket();
 			events.emit('basket:change');
+			orderData.clearForm();
+			paymentForm.removeSelection();
 		})
 		.catch((err) => {
 			console.error(err);

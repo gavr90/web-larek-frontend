@@ -42,4 +42,13 @@ export class BasketView extends Component<IBasketView> {
 	set total(total: number) {
 		this.setText(this._total, `${total} синапсов`);
 	}
+
+	setNumbers() {
+		const indexList = this.container.querySelectorAll('.basket__item-index');
+		let i = 1;
+		for (let a = 0; a < indexList.length; a++) {
+			indexList[a].textContent = `${i}`;
+			i += 1;
+		}
+	}
 }

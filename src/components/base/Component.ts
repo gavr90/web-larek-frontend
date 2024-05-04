@@ -18,6 +18,11 @@ export abstract class Component<T> {
 		element.classList.replace(className, newClassName);
 	}
 
+	// Убрать класс
+	removeClass(element: HTMLElement, className: string) {
+		element.classList.remove(className);
+	}
+
 	// Установить текстовое содержимое
 	protected setText(element: HTMLElement, value: unknown) {
 		if (element) {

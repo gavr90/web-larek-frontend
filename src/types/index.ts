@@ -1,5 +1,3 @@
-import { IEvents } from '../components/base/Events';
-
 // DATA - модель данных
 
 export type ApiListResponse<Type> = {
@@ -13,33 +11,38 @@ export interface ILarekApi {
 	sendOrder(data: IOrderData): Promise<ISuccessData>;
 }
 
-export interface IItemData extends IEvents {
+export type IItemData = {
 	id: string;
 	image: string;
 	title: string;
 	category: ItemCategory;
 	price: number | null;
 	description: string;
-	getItem(id: string): IItemData;
-}
+};
 
 export enum ItemCategory {
-	Soft = "софт-скил",
-	Hard = "хард-скил",
-	Button = "кнопка",
-	Other = "другое",
-	Additional = "дополнительное"
+	Soft = 'софт-скил',
+	Hard = 'хард-скил',
+	Button = 'кнопка',
+	Other = 'другое',
+	Additional = 'дополнительное',
+}
+
+export interface IItemCatalogData {
+	catalog: IItemData[];
+	getItem(id: string): IItemData;
+	setCatalog(items: IItemData[]): void;
 }
 
 export type CategoryMap = {
-  [key in ItemCategory]: string;
+	[key in ItemCategory]: string;
 };
 
 export interface IBasketData {
 	itemList: IItemData[];
 	totalPrice: number | undefined;
 	itemsIdList: string[];
-  addItem(item: IItemData): number;
+	addItem(item: IItemData): number;
 	removeItem(id: string): void;
 	clearBasket(): void;
 }
@@ -65,11 +68,12 @@ export type FormErrors = Partial<Record<keyof IOrderData, string>>;
 
 export interface IOrderModel {
 	order: IOrderData;
-	formErrors: FormErrors;	
+	formErrors: FormErrors;
 	addItems(idList: string[]): string[];
 	addTotal(total: number): number;
 	setOrderField(field: keyof IFormData, value: string): void;
 	validateOrder(): boolean;
+	clearForm(): void;
 }
 
 export type ISuccessData = {
@@ -79,7 +83,7 @@ export type ISuccessData = {
 
 // VIEW - отображение
 
-export interface IItemView extends IEvents, IItemData {
+export interface IItemView extends IItemData {
 	_title: HTMLElement;
 	_price: HTMLElement;
 	_image?: HTMLImageElement;
@@ -90,7 +94,7 @@ export interface IItemView extends IEvents, IItemData {
 	setCategoryStyle(category: ItemCategory, map: CategoryMap): void;
 }
 
-export interface IPageView extends IEvents {
+export interface IPageView {
 	_counter: HTMLElement;
 	_catalog: HTMLElement;
 	_wrapper: HTMLElement;
@@ -101,7 +105,7 @@ export interface IModalContent {
 	content: HTMLElement;
 }
 
-export interface IModalView extends IEvents, IModalContent {
+export interface IModalView extends IModalContent {
 	_content: HTMLElement;
 	_closeButton: HTMLButtonElement;
 	open(): void;
@@ -109,11 +113,12 @@ export interface IModalView extends IEvents, IModalContent {
 	render(content: HTMLElement): HTMLElement;
 }
 
-export interface IBasketView extends IEvents, IBasketData {
+export interface IBasketView extends IBasketData {
 	_items: HTMLElement[];
 	_list: HTMLElement;
 	_total: HTMLElement;
 	_button: HTMLElement;
+	setNumbers(): void;
 }
 
 export interface IFormState {
@@ -128,7 +133,12 @@ export interface IFormView<T> {
 	render(state: Partial<T> & IFormState): HTMLFormElement;
 }
 
-export interface ISuccessView extends IEvents, ISuccessData {
+export interface IPaymentFormView {
+	onClick: (value: string) => void;
+	removeSelection(): void;
+}
+
+export interface ISuccessView extends ISuccessData {
 	_total: HTMLElement;
 	_button: HTMLButtonElement;
 }

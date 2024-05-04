@@ -36,7 +36,7 @@ export class ItemView extends Component<IItemView> {
 	get id(): string {
 		return this.container.dataset.id || '';
 	}
-	
+
 	set title(value: string) {
 		this.setText(this._title, value);
 	}
@@ -66,8 +66,12 @@ export class ItemView extends Component<IItemView> {
 		return this.setDisabled(this._button, true);
 	}
 
-  setCategoryStyle(category: ItemCategory, map: CategoryMap) {
+	setCategoryStyle(category: ItemCategory, map: CategoryMap) {
 		const modifier = map[category];
-	 	this.replaceClass(this._category, this._category.classList[1], `${this._category.classList[0]}_${modifier}`)
+		this.replaceClass(
+			this._category,
+			this._category.classList[1],
+			`${this._category.classList[0]}_${modifier}`
+		);
 	}
 }

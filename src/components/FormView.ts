@@ -1,4 +1,9 @@
-import { IPaymentData, IContactsData, IFormState } from '../types';
+import {
+	IPaymentData,
+	IContactsData,
+	IFormState,
+	IPaymentFormView,
+} from '../types';
 import { Component } from './base/Component';
 import { ensureAllElements, ensureElement } from '../utils/utils';
 import { IEvents } from './base/Events';
@@ -57,7 +62,7 @@ abstract class FormView<T> extends Component<IFormState> {
 
 export class PaymentFormView
 	extends FormView<IPaymentData>
-	implements SelectActions
+	implements SelectActions, IPaymentFormView
 {
 	protected _buttons: HTMLButtonElement[];
 	onClick: (value: string) => void;
@@ -88,6 +93,12 @@ export class PaymentFormView
 	set address(value: string) {
 		(this.container.elements.namedItem('address') as HTMLInputElement).value =
 			value;
+	}
+
+	removeSelection() {
+		this._buttons.forEach((button) => {
+			this.removeClass(button, 'button_alt-active');
+		});
 	}
 }
 

@@ -1,4 +1,4 @@
-import { IEvents, EventEmitter } from '../components/base/Events';
+import { IEvents } from '../components/base/Events';
 import {
 	IBasketData,
 	IFormData,
@@ -8,11 +8,10 @@ import {
 	FormErrors,
 } from '../types';
 
-export class BasketData extends EventEmitter implements IBasketData {
+export class BasketData implements IBasketData {
 	itemList: IItemData[];
-	
+
 	constructor() {
-		super();
 		this.itemList = [];
 	}
 
@@ -42,7 +41,7 @@ export class BasketData extends EventEmitter implements IBasketData {
 	}
 }
 
-export class OrderData extends EventEmitter implements IOrderModel {
+export class OrderData implements IOrderModel {
 	order: IOrderData = {
 		payment: '',
 		address: '',
@@ -54,7 +53,6 @@ export class OrderData extends EventEmitter implements IOrderModel {
 	formErrors: FormErrors = {};
 
 	constructor(data: Partial<IOrderData>, protected events: IEvents) {
-		super();
 		Object.assign(this, data);
 	}
 
@@ -90,5 +88,12 @@ export class OrderData extends EventEmitter implements IOrderModel {
 		this.formErrors = errors;
 		this.events.emit('formErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
+	}
+
+	clearForm() {
+		this.order.payment = '';
+		this.order.address = '';
+		this.order.email = '';
+		this.order.phone = '';
 	}
 }
